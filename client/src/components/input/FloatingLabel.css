@@ -1,0 +1,26 @@
+.float-label {
+    position: relative;
+    /* margin-bottom: 12px; */
+  }
+  
+  .label {
+    font-size: 12px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 12px;
+    top: 12px;
+    transition: 0.2s ease all;
+    color: gray;
+  }
+  
+  .label-float {
+    background: white;
+    width: auto;
+    top: -9px;
+    padding: 0 6px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color:#ed9324;
+  }
+  
