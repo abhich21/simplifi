@@ -320,6 +320,7 @@ export const SignUp = ({userName, setUserName}) => {
                 <div>
                   <FloatingLabel label="Mobile Number*" name="mobile" value={userName}>
                     <input 
+                      type="number"
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       />
