@@ -11,9 +11,7 @@ const FloatingLabel = (props) => {
     return (
     <div
         className="float-label"
-        onBlur={() => {
-            if(value.length !== 0 ) setFocus(false);
-             else setFocus(true)}}
+        onBlur={() => setFocus(false)}
         onFocus={() => setFocus(true)}
     >
         {children}
