@@ -119,12 +119,12 @@ const ResendText = styled.div`
   font-size: 14px;
 `;
 const ConflictDiv = styled.div`
-  height: 19%;
+  height: auto;
   text-align:center;
   width: auto%;
   border: 1px solid red;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 8px 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 
   @media (max-width: 768px) {
@@ -137,8 +137,8 @@ const ConflictDivText = styled.div`
   text-align: center;
   justify-content:center;
   margin-top: 16px;
-  @media (max-width: 400px) {
-    font-size: 14px;
+  @media (max-width: 768px) {
+    font-size: 15px;
   }
 `;
 
@@ -159,12 +159,13 @@ export const SignUp = ({userName, setUserName}) => {
   const [otpError, setOtpError] = useState("");
 
   const [conflictdivVisibility, setConflictdivVisibility] = useState(false);
+  const [conflictDivData, setconflictDivData] = useState("");
 
   const navigate = useNavigate();
 
   const { enqueueSnackbar,closeSnackbar } = useSnackbar();
-  const enqueueSuccessSnackbar = () => {
-    enqueueSnackbar("OTP generated & sent successfully!", {
+  const enqueueSuccessSnackbar = (message="OTP generated and sent successfully") => {
+    enqueueSnackbar(message, {
       variant: "success"
     });
   };
@@ -213,8 +214,8 @@ export const SignUp = ({userName, setUserName}) => {
     if (!mobile) {
       setMobileError("Mobile number is required");
       valid = false;
-    }else if (!/^\d{10,12}$/.test(mobile)) {
-      setMobileError("Mobile number must be 10-12 digits");
+    }else if (!/^\d{6,12}$/.test(mobile)) {
+      setMobileError("Mobile number must be 6-12 digits");
       valid = false;
     } else {
       setMobileError("");
@@ -235,18 +236,22 @@ export const SignUp = ({userName, setUserName}) => {
 
   const handleSubmit = async () => {
     const reqBody = {
-      "name": `${title} ${userName}`,
-      "mobile": `${isd}-${mobile}`,
-      email
+      "name": userName,
+      "mobile": `${isd} ${mobile}`,
+      email,
+      "salutation" : title
     }
     if (validateForm()) {
-      await axios.post("https://simplifi-501o.onrender.com/api/user/signup",reqBody)
+      await axios.post("https://colo-dev.infollion.com/api/v1/self-registration/register",reqBody)
                   .then((response)=>{
-                    enqueueSuccessSnackbar();
+                    enqueueSuccessSnackbar(response.message);
                     setShowOtpInput(true); 
                     setResendTimer(60);
                     setConflictdivVisibility(false);
-                  }).catch((error)=> {setConflictdivVisibility(true)}); 
+                  }).catch((error)=> {
+                    setconflictDivData(error);
+                    setConflictdivVisibility(true)
+                  }); 
     }
   };
   const handleResendOtp = () => {
